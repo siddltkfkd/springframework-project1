@@ -1,8 +1,13 @@
 package com.nhnacademy.edu.springframework.project.service;
 
+import com.nhnacademy.edu.springframework.project.repository.CsvStudents;
 import com.nhnacademy.edu.springframework.project.repository.Score;
+import com.nhnacademy.edu.springframework.project.repository.Students;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class DefaultGradeQueryService implements GradeQueryService {
 
@@ -18,7 +23,14 @@ public class DefaultGradeQueryService implements GradeQueryService {
         //
         // Hint. CsvStudents 클래스의 findAll() 이 있네요? 적절히 필터링하고 찾아오면 되겠죠?
         //
-        return null;
+        List<Student> students = CsvStudents.getInstance().findAll().stream()
+                .filter(student -> student.toString().contains("name="+name))
+                .collect(Collectors.toList());
+        List<Score> scores = new ArrayList<>();
+        for(Student student:students){
+            scores.add(student.getScore());
+        }
+        return scores;
     }
 
     @Override
