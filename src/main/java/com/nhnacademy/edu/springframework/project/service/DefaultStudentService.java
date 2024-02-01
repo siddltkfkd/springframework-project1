@@ -4,6 +4,7 @@ import com.nhnacademy.edu.springframework.project.repository.CsvStudents;
 import com.nhnacademy.edu.springframework.project.repository.StudentService;
 import com.nhnacademy.edu.springframework.project.repository.Students;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 public class DefaultStudentService implements StudentService {
@@ -13,7 +14,11 @@ public class DefaultStudentService implements StudentService {
         // TODO 1 : pass한 학생만 반환하도록 수정하세요.
         // Student 는 Score 를 갖고 있고 Score 에는 pass 여부를 알수 있는 메서드가 있습니다.
         // Java stream api 의 filter() 를 사용하여 필터링된 Student 객체를 리턴 하세요. (Students 와 Student 는 다릅니다.)
-        return studentRepository.findAll();
+        Collection<Student> students = new ArrayList<>();
+        studentRepository.findAll().stream()
+                .filter(student -> !student.getScore().isFail())
+                .forEach(student -> students.add(student));
+        return students;
     }
 
     @Override
