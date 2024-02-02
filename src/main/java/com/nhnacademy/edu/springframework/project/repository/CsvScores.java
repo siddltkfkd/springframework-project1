@@ -1,29 +1,26 @@
 package com.nhnacademy.edu.springframework.project.repository;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+@Component
 public class CsvScores implements Scores {
-    private static final CsvScores INSTANCE = new CsvScores();
     private List<Score> loadData;
-    private String filePath = "/home/nhnacademy/IdeaProjects/springframework-project1/src/main/resources/data/score.csv";
+    @Value("${scoreFilePath}")
+    private String filePath;
 
     private CsvScores(){
         loadData = new ArrayList<>();
     }
 
-    /** TODO 2 :
-     * Java Singleton 패턴으로 getInstance() 를 구현하세요.
-     **/
-    public static Scores getInstance() {
-        return INSTANCE;
-    }
-
-    // TODO 5 : score.csv 파일에서 데이터를 읽어 멤버 변수에 추가하는 로직을 구현하세요.
     @Override
     public void load() {
+        System.out.println("filePath = " + filePath);
         File csv = new File(filePath);
         BufferedReader br = null;
         String line;
