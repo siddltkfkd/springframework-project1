@@ -54,7 +54,7 @@ public class CsvStudents implements Students {
 
     @Override
     public Collection<Student> findAll() {
-        return null;
+        return loadData;
     }
 
     /**
@@ -63,6 +63,14 @@ public class CsvStudents implements Students {
      */
     @Override
     public void merge(Collection<Score> scores) {
-
+        for(Student student:loadData){
+            int seq = student.getSeq();
+            for(Score score:scores){
+                if (score.getStudentSeq() == seq){
+                    student.setScore(score);
+                    break;
+                }
+            }
+        }
     }
 }

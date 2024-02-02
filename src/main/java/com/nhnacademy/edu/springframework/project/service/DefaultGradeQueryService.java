@@ -24,7 +24,7 @@ public class DefaultGradeQueryService implements GradeQueryService {
         // Hint. CsvStudents 클래스의 findAll() 이 있네요? 적절히 필터링하고 찾아오면 되겠죠?
         //
         List<Student> students = CsvStudents.getInstance().findAll().stream()
-                .filter(student -> student.toString().contains("name="+name))
+                .filter(student -> student.getName().equals(name))
                 .collect(Collectors.toList());
         List<Score> scores = new ArrayList<>();
         for(Student student:students){
@@ -37,7 +37,7 @@ public class DefaultGradeQueryService implements GradeQueryService {
     public Score getScoreByStudentSeq(int seq) {
         // TODO 6 : 학번으로 점수를 반환합니다. seq 인자가 학번입니다.
         List<Student> students = CsvStudents.getInstance().findAll().stream()
-                .filter(student -> student.toString().contains("seq="+seq))
+                .filter(student -> student.getSeq() == seq)
                 .collect(Collectors.toList());
         if (students.size() == 1){
             return students.get(0).getScore();
