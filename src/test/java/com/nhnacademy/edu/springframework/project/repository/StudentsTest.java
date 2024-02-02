@@ -17,6 +17,11 @@ class StudentsTest {
     void load() {
         Collection<Student> students = csvStudents.findAll();
         Assertions.assertEquals(students.size(), 0);
+
+        csvStudents.load();
+        students = csvStudents.findAll();
+        Assertions.assertEquals(students.size(), 15);
+
         csvStudents.load();
         students = csvStudents.findAll();
         Assertions.assertEquals(students.size(), 15);
@@ -25,7 +30,6 @@ class StudentsTest {
     @Test
     @Order(2)
     void findAll() {
-        csvStudents.load();
         Collection<Student> students = csvStudents.findAll();
         Assertions.assertEquals(students.stream().findAny().get().getClass(), Student.class);
     }
@@ -33,13 +37,17 @@ class StudentsTest {
     @Test
     @Order(3)
     void merge() {
+        for (Student student:csvStudents.findAll()){
+            Assertions.assertNull(student.getScore());
+        }
+
         Scores csvScores = CsvScores.getInstance();
         csvScores.load();
         List<Score> scores = csvScores.findAll();
-        csvStudents.load();
         csvStudents.merge(scores);
-        Collection<Student> students = csvStudents.findAll();
-        for (Student student:students){
+
+        for (Student student:csvStudents.findAll()){
+            Assertions.assertNotNull(student.getScore());
             Assertions.assertEquals(student.getScore().getStudentSeq(), student.getSeq());
         }
     }

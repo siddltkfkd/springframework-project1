@@ -12,6 +12,7 @@ import java.util.Objects;
 public class CsvStudents implements Students {
     private static final CsvStudents INSTANCE = new CsvStudents();
     private List<Student> loadData;
+    private String filePath = "/home/nhnacademy/IdeaProjects/springframework-project1/src/main/resources/data/student.csv";
 
     private CsvStudents() {
         loadData = new ArrayList<>();
@@ -28,15 +29,17 @@ public class CsvStudents implements Students {
     // 데이터를 적재하고 읽기 위해서, 적절한 자료구조를 사용하세요.
     @Override
     public void load() {
-        File csv = new File("/home/nhnacademy/IdeaProjects/springframework-project1/src/main/resources/data/student.csv");
+        File csv = new File(filePath);
         BufferedReader br = null;
         String line;
         try{
             br = new BufferedReader(new FileReader(csv));
+            List<Student> students = new ArrayList<>();
             while((line = br.readLine()) != null){
                 String[] lineSplit = line.split(",");
-                loadData.add(new Student(Integer.valueOf(lineSplit[0]), lineSplit[1]));
+                students.add(new Student(Integer.valueOf(lineSplit[0]), lineSplit[1]));
             }
+            loadData = students;
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         } catch (IOException e) {
