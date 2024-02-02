@@ -36,6 +36,12 @@ public class DefaultGradeQueryService implements GradeQueryService {
     @Override
     public Score getScoreByStudentSeq(int seq) {
         // TODO 6 : 학번으로 점수를 반환합니다. seq 인자가 학번입니다.
+        List<Student> students = CsvStudents.getInstance().findAll().stream()
+                .filter(student -> student.toString().contains("seq="+seq))
+                .collect(Collectors.toList());
+        if (students.size() == 1){
+            return students.get(0).getScore();
+        }
         return null;
     }
 }
