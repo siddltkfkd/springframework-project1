@@ -1,8 +1,8 @@
 package com.nhnacademy.edu.springframework.project;
 
 import com.nhnacademy.edu.springframework.project.config.JavaConfig;
+import com.nhnacademy.edu.springframework.project.repository.StudentService;
 import com.nhnacademy.edu.springframework.project.service.DataLoadService;
-import com.nhnacademy.edu.springframework.project.service.DefaultStudentService;
 import com.nhnacademy.edu.springframework.project.service.Student;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
@@ -14,7 +14,7 @@ public class Main {
         DataLoadService dataLoadService = context.getBean("csvDataLoadService", DataLoadService.class);
         dataLoadService.loadAndMerge();
 
-        DefaultStudentService studentService = context.getBean("defaultStudentService", DefaultStudentService.class);
+        StudentService studentService = context.getBean("defaultStudentService", StudentService.class);
         Collection<Student> passedStudents = studentService.getPassedStudents();
         System.out.println(passedStudents);
 

@@ -54,10 +54,6 @@ public class CsvStudents implements Students {
         return loadData;
     }
 
-    /**
-     * TODO 8 : students 데이터에 score 정보를 추가하세요.
-     * @param scores
-     */
     @Override
     public void merge( Collection<Score> scores) {
         for(Student student:loadData){

@@ -20,7 +20,6 @@ public class CsvScores implements Scores {
 
     @Override
     public void load() {
-        System.out.println("filePath = " + filePath);
         File csv = new File(filePath);
         BufferedReader br = null;
         String line;

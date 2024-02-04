@@ -1,18 +1,16 @@
 package com.nhnacademy.edu.springframework.project.repository;
 
-import com.nhnacademy.edu.springframework.project.service.Student;
+import com.nhnacademy.edu.springframework.project.config.JavaConfig;
 import org.junit.jupiter.api.*;
-import org.junit.jupiter.params.shadow.com.univocity.parsers.csv.Csv;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import java.util.Collection;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class ScoresTest {
-    Scores csvScores = CsvScores.getInstance();
-
+    AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(JavaConfig.class);
+    CsvScores csvScores = context.getBean("csvScores", CsvScores.class);
     @Test
     @Order(1)
     void load() {
@@ -31,6 +29,7 @@ class ScoresTest {
     @Test
     @Order(2)
     void findAll() {
+        csvScores.load();
         Collection<Score> scores = csvScores.findAll();
         Assertions.assertEquals(scores.stream().findAny().get().getClass(), Score.class);
     }
