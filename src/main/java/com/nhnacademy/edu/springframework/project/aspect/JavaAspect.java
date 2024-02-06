@@ -19,8 +19,7 @@ public class JavaAspect {
             return pjp.proceed();
         } finally {
             stopWatch.stop();
-            log.info("[{}].[{}] {}ms", pjp.getTarget().getClass().getSimpleName(), pjp.getSignature().getName(), stopWatch.getTotalTimeMillis());
-            log.info(stopWatch.prettyPrint());
+            log.info("[{}].[{}] [{}.{}]ms", pjp.getTarget().getClass().getSimpleName(), pjp.getSignature().getName(), stopWatch.getTotalTimeNanos()/1000000, stopWatch.getTotalTimeNanos() / 100000);
         }
     }
 
