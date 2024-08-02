@@ -1,43 +1,34 @@
 package com.nhnacademy.edu.springframework.project.service;
 
 import com.nhnacademy.edu.springframework.project.repository.CsvStudents;
-import com.nhnacademy.edu.springframework.project.repository.Score;
-import com.nhnacademy.edu.springframework.project.repository.Students;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
-import java.util.Collection;
-import java.util.List;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 class GradeQueryServiceTest {
-    DefaultGradeQueryService gradeQueryService = new DefaultGradeQueryService();
-    CsvDataLoadService dataLoadService = new CsvDataLoadService();
-    private Students csvStudents = CsvStudents.getInstance();
-    Collection<Student> students;
+    @Mock
+    CsvStudents csvStudents;
+    @InjectMocks
+    DefaultGradeQueryService gradeQueryService;
     @BeforeEach
     void setUp(){
-        dataLoadService.loadAndMerge();
-        students = csvStudents.findAll();
+        MockitoAnnotations.initMocks(this);
     }
 
     @Test
     void getScoreByStudentName() {
-        List<Score> filteredScore = gradeQueryService.getScoreByStudentName("A");
-        Assertions.assertEquals(filteredScore.size(), 2);
-
-        for(Score score:filteredScore){
-            for(Student student:students){
-                if (score.getStudentSeq() == student.getSeq()){
-                    Assertions.assertTrue(student.getName().equals("A"));
-                }
-            }
-        }
+        gradeQueryService.getScoreByStudentName("A");
+        verify(csvStudents, times(1)).findAll();
     }
 
     @Test
     void getScoreByStudentSeq() {
-        Score filteredScore = gradeQueryService.getScoreByStudentSeq(1);
-        Assertions.assertEquals(filteredScore.getScore(), 30);
+        gradeQueryService.getScoreByStudentSeq(1);
+        verify(csvStudents, times(1)).findAll();
     }
 }

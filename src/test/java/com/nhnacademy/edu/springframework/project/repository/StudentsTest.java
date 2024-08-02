@@ -1,16 +1,18 @@
 package com.nhnacademy.edu.springframework.project.repository;
 
+import com.nhnacademy.edu.springframework.project.config.JavaConfig;
 import com.nhnacademy.edu.springframework.project.service.Student;
 import org.junit.jupiter.api.*;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import java.util.Collection;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class StudentsTest {
-    private  Students csvStudents = CsvStudents.getInstance();
+    AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(JavaConfig.class);
+    CsvScores csvScores = context.getBean("csvScores", CsvScores.class);
+    CsvStudents csvStudents = context.getBean("csvStudents", CsvStudents.class);
 
     @Test
     @Order(1)
@@ -30,6 +32,7 @@ class StudentsTest {
     @Test
     @Order(2)
     void findAll() {
+        csvStudents.load();
         Collection<Student> students = csvStudents.findAll();
         Assertions.assertEquals(students.stream().findAny().get().getClass(), Student.class);
     }
@@ -41,7 +44,6 @@ class StudentsTest {
             Assertions.assertNull(student.getScore());
         }
 
-        Scores csvScores = CsvScores.getInstance();
         csvScores.load();
         List<Score> scores = csvScores.findAll();
         csvStudents.merge(scores);
